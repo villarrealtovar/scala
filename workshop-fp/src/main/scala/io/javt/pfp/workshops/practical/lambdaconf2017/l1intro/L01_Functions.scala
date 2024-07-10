@@ -1,8 +1,8 @@
-package io.javt.pfp.workshops.practical.lambdaconf2017.intro
+package io.javt.pfp.workshops.practical.lambdaconf2017.l1intro
 
 import cats.implicits._
 
-object Functions {
+object L01_Functions {
 
   /** Defining a function */
 

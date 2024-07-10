@@ -13,6 +13,7 @@ object Dependencies {
     def cats(artifact: String): ModuleID = "org.typelevel" %% artifact % Version.cats
 
     val catsCore = cats("cats-core")
+    val catsEffet = cats("cats-effect")
     val catsLaws = cats("cats-laws")
     val discipline = "org.typelevel" %% "discipline-core" % Version.discipline
     val disciplineScalatest = "org.typelevel" %% "discipline-scalatest" %  Version.disciplineScalatest

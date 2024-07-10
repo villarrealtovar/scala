@@ -1,4 +1,4 @@
-package io.javt.pfp.workshops.practical.lambdaconf2017.intro
+package io.javt.pfp.workshops.practical.lambdaconf2017.l1intro
 
 /**
   *  Second most widely used feature in Scala language

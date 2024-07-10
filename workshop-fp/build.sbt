@@ -12,9 +12,11 @@ lazy val root = (project in file("."))
     name := "workshop-fp",
     libraryDependencies ++= Seq(
       Libraries.catsCore,
+      Libraries.catsEffet,
       Libraries.catsLaws,
       Libraries.discipline,
       Libraries.disciplineScalatest,
       Libraries.scalatest
+
     )
   )
