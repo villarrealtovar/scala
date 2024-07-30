@@ -4,7 +4,7 @@ package io.javt.pfp.workshops.practical.lambdaconf2017.l1intro
   *  Second most widely used feature in Scala language
   *  At first glance looks like a switch statement on steroids, but it is so much more then that
   */
-object PatternMatching {
+object L02_PatternMatching {
 
   /** switch on steroids */
   def goToTheGym(): Boolean = true
