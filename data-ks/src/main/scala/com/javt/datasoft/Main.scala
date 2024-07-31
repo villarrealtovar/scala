@@ -8,7 +8,7 @@ import org.http4s.dsl.Http4sDsl
 import cats.effect.IO
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Router
-import com.javt.datasoft.http.routes.HealthRoutes
+import com.javt.datasoft.http.HttpApi
 import com.javt.datasoft.config.EmberConfig
 import pureconfig.error.ConfigReaderException
 import com.javt.datasoft.config.syntax.*
@@ -25,7 +25,7 @@ object Main extends IOApp.Simple {
                 .default[IO]
                 .withHost(config.host) 
                 .withPort(config.port)
-                .withHttpApp(HealthRoutes[IO].routes.orNotFound)
+                .withHttpApp(HttpApi[IO].endpoints.orNotFound)
                 .build
                 .use(_ => IO.println("Server Ready") *> IO.never)
         }
