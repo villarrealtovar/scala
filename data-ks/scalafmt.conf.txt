@@ -1,0 +1,7 @@
+# Rename this file to .scalafmt.conf and put it in the project's root path
+
+version = "3.5.9"
+
+align.preset = more
+maxColumn = 100
+runner.dialect = scala3
