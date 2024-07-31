@@ -1,15 +1,25 @@
 package com.javt.datasoft.http.routes
 
+import org.http4s.*
+import org.http4s.dsl.*
+import org.http4s.dsl.impl.* 
+import org.http4s.server.* 
 import cats.Monad
-import org.http4s.HttpRoutes
-import org.http4s.dsl.Http4sDsl
 
-class HealthRoutes {
-    def healthEndpoint[F[_] : Monad]: HttpRoutes[F] = {
-        val dsl = Http4sDsl[F]
-        import dsl.* 
-        HttpRoutes.of[F] {
-            case GET -> Root / "health" => Ok("All going great!") 
+
+class HealthRoutes[F[_] : Monad] private extends Http4sDsl[F] {
+    val healthRoute: HttpRoutes[F] = HttpRoutes.of[F] {
+            case GET -> Root => 
+                Ok("All going great!") 
         }
-    }
+    
+
+    val routes = Router(
+        "/health" -> healthRoute
+    )
+}
+
+
+object HealthRoutes {
+    def apply[F[_] : Monad] = new HealthRoutes[F]
 }
