@@ -23,6 +23,7 @@ lazy val server = (project in file("."))
         Libraries.http4sServer,
         // Libraries.kafkaStreams,
         Libraries.postgresql,
+        Libraries.pureConfig,
         Libraries.slf4j
     ) 
 )

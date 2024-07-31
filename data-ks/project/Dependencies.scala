@@ -9,6 +9,7 @@ object Dependencies {
     val http4s = "0.23.15"
     val kafkaStreams = "3.4.0"
     val postgresSql = "42.3.5"
+    val pureConfig = "0.17.1"
     val slf4jSimple = "2.0.0"
   }
 
@@ -26,6 +27,7 @@ object Dependencies {
     lazy val http4sDsl = http4s("dsl")
     lazy val kafkaStreams = "org.apache.kafka" %% "kafka-streams-scala" % Version.kafkaStreams
     lazy val postgresql = "org.postgresql" % "postgresql" % Version.postgresSql
+    lazy val pureConfig = "com.github.pureconfig" %% "pureconfig-core" % Version.pureConfig
     lazy val slf4j = "org.slf4j" % "slf4j-simple" % Version.slf4jSimple
     
   }
