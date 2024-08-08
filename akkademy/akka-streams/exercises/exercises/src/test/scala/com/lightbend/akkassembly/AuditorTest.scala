@@ -1,12 +1,12 @@
 package com.lightbend.akkassembly
 
 import akka.stream.scaladsl.{Keep, Source}
-import akka.stream.testkit.scaladsl.{TestSource, TestSink}
+import akka.stream.testkit.scaladsl.{TestSink, TestSource}
 import akka.testkit.EventFilter
 import org.scalatest.freespec.AnyFreeSpec
 
-import scala.concurrent.duration._
 import scala.collection.immutable.Seq
+import scala.concurrent.duration._
 
 class AuditorTest extends AnyFreeSpec with AkkaSpec {
 
@@ -110,6 +110,54 @@ class AuditorTest extends AnyFreeSpec with AkkaSpec {
 
       sink.expectNextN(expectedCars)
       sink.expectComplete()
+    }
+  }
+
+  "audit" - {
+    "should return zero if there are no cars in the stream" in {
+      val auditor = new Auditor()
+
+      val cars = Source.empty[Car]
+      val sampleSize = 100.millis
+
+      val result = auditor.audit(cars, sampleSize).futureValue
+
+      assert(result === 0)
+    }
+    "should return all cars if they are within the sample period" in {
+      val auditor = new Auditor()
+
+      val expectedQuantity = 10
+      val cars = Source.repeat(
+        Car(SerialNumber(), Color("000000"), Engine(), Seq.fill(4)(Wheel()), None)
+      ).take(expectedQuantity)
+      val sampleSize = 100.millis
+
+      val result = auditor.audit(cars, sampleSize).futureValue
+
+      assert(result === expectedQuantity)
+    }
+    "should limit the cars to only those that are within the sample period" in {
+      val auditor = new Auditor()
+
+      def generateCars(quantity: Int) = {
+        (1 to quantity).map(_ =>
+          Car(SerialNumber(), Color("000000"), Engine(), Seq.fill(4)(Wheel()), None)
+        )
+      }
+
+      val expectedQuantity = 5
+      val sampleSize = 450.millis
+
+      val expectedCars = Source(generateCars(expectedQuantity))
+      val unexpectedCars = Source(generateCars(expectedQuantity))
+        .initialDelay(sampleSize * 2)
+
+      val cars = expectedCars.concat(unexpectedCars);
+
+      val result = auditor.audit(cars, sampleSize).futureValue
+
+      assert(result === 5)
     }
   }
 }

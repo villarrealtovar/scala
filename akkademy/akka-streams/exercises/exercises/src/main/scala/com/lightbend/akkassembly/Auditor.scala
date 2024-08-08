@@ -1,13 +1,14 @@
 package com.lightbend.akkassembly
 
+import akka.actor.ActorSystem
 import akka.{NotUsed, Done}
 import akka.event.LoggingAdapter
-import akka.stream.scaladsl.{Flow, Sink}
+import akka.stream.scaladsl.{Source, Flow, Sink}
 
 import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration
 
-class Auditor {
+class Auditor(implicit system: ActorSystem) {
   val count: Sink[Any, Future[Int]] = Sink.fold[Int, Any](0) {
     case (c, _) => c + 1
   }
@@ -18,5 +19,9 @@ class Auditor {
 
   def sample(sampleSize: FiniteDuration): Flow[Car, Car, NotUsed] = {
     Flow[Car].takeWithin(sampleSize)
+  }
+
+  def audit(cars: Source[Car, NotUsed], sampleSize: FiniteDuration): Future[Int] = {
+    cars.via(sample(sampleSize)).runWith(count)
   }
 }

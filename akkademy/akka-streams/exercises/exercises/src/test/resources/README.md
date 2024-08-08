@@ -1,6 +1,6 @@
-working-with-flows
+building-streams
 
-# Exercise 3 > Working with Flows
+# Exercise 4 > Building Streams
 
 In the course video recordings, the instructor uses a `man e` command in the sbt interactive session to display exercise instructions.
 
