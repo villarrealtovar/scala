@@ -1,6 +1,6 @@
-building-streams
+graphs
 
-# Exercise 4 > Building Streams
+# Exercise 6 > Graphs
 
 In the course video recordings, the instructor uses a `man e` command in the sbt interactive session to display exercise instructions.
 

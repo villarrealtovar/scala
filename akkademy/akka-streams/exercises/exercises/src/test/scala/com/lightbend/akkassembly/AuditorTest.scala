@@ -64,7 +64,7 @@ class AuditorTest extends AnyFreeSpec with AkkaSpec {
       source.via(auditor.sample(sampleSize))
         .runWith(TestSink.probe[Car])
         .request(10)
-        .expectComplete()
+          .expectComplete()
     }
     "should return all elements if they appear within the sample period." in {
       val auditor = new Auditor
@@ -107,8 +107,8 @@ class AuditorTest extends AnyFreeSpec with AkkaSpec {
         Car(SerialNumber(), Color("000000"), Engine(), Seq.fill(4)(Wheel()), None)
       )
       source.sendComplete()
-
       sink.expectNextN(expectedCars)
+
       sink.expectComplete()
     }
   }
