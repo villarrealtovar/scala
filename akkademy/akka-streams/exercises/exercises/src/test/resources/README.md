@@ -1,4 +1,4 @@
-fusion
+streams-telemetry-intro
 
 # Exercise 7 > Fusion
 

@@ -14,13 +14,12 @@ class Factory(bodyShop: BodyShop,
              (implicit system: ActorSystem) {
   def orderCars(quantity: Int): Future[Seq[Car]] = {
     bodyShop.cars
-      .via(paintShop.paint)
-      .via(engineShop.installEngine)
+      .via(paintShop.paint.named("paint-stage"))
+      .via(engineShop.installEngine.named("install-engine-stage"))
       .async
-      .via(wheelShop.installWheels)
-      .async
-      .via(upgradeShop.installUpgrades)
-      .via(qualityAssurance.inspect)
+      .via(wheelShop.installWheels.named("install-wheels-stage"))
+      .via(upgradeShop.installUpgrades.named("install-upgrades-stage"))
+      .via(qualityAssurance.inspect.named("inspect-stage"))
       .take(quantity)
       .runWith(Sink.seq)
   }

@@ -28,7 +28,7 @@ object Akkassembly extends App {
 
   val startTime = System.currentTimeMillis()
 
-  factory.orderCars(1000).withTimer("Order Cars").andThen {
+  factory.orderCars(10000).withTimer("Order Cars").andThen {
     case _ =>
       system.terminate()
   }
