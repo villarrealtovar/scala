@@ -1,6 +1,6 @@
-graphs
+fusion
 
-# Exercise 6 > Graphs
+# Exercise 7 > Fusion
 
 In the course video recordings, the instructor uses a `man e` command in the sbt interactive session to display exercise instructions.
 

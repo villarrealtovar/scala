@@ -12,8 +12,8 @@ class UpgradeShop {
 
       val balance = builder.add(Balance[UnfinishedCar](3))
       val merge = builder.add(Merge[UnfinishedCar](3))
-      val upgradeToDX = Flow[UnfinishedCar].map(_.installUpgrade(Upgrade.DX))
-      val upgradeToSport = Flow[UnfinishedCar].map(_.installUpgrade(Upgrade.Sport))
+      val upgradeToDX = Flow[UnfinishedCar].map(car => car.installUpgrade(Upgrade.DX))
+      val upgradeToSport = Flow[UnfinishedCar].map(car => car.installUpgrade(Upgrade.Sport))
 
       balance ~> upgradeToDX    ~> merge
       balance ~> upgradeToSport ~> merge

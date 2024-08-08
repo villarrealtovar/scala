@@ -3,6 +3,7 @@ package com.lightbend.akkassembly
 import akka.stream.scaladsl.{Sink, Source}
 import org.scalatest.freespec.AnyFreeSpec
 
+
 class UpgradeShopTest extends AnyFreeSpec with AkkaSpec {
 
   "upgrade" - {

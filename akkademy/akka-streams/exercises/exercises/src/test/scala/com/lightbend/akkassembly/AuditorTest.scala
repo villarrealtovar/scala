@@ -107,8 +107,8 @@ class AuditorTest extends AnyFreeSpec with AkkaSpec {
         Car(SerialNumber(), Color("000000"), Engine(), Seq.fill(4)(Wheel()), None)
       )
       source.sendComplete()
-      sink.expectNextN(expectedCars)
 
+      sink.expectNextN(expectedCars)
       sink.expectComplete()
     }
   }

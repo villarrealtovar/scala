@@ -15,7 +15,7 @@ class BodyShopTest extends AnyFreeSpec with AkkaSpec {
         .runWith(Sink.seq)
         .futureValue
 
-      assert(cars.size == 5)
+      assert(cars.size == 6)
     }
   }
 }
