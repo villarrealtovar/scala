@@ -5,6 +5,7 @@ import java.nio.file.Paths
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import org.slf4j.LoggerFactory
+import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings}
 
 object Main extends App {
   val log = LoggerFactory.getLogger(this.getClass)
@@ -21,16 +22,15 @@ object Main extends App {
   val rootPath = Paths.get("tmp")
   val loyaltyRepository: LoyaltyRepository = new FileBasedLoyaltyRepository(rootPath)(system.dispatcher)
 
-  val loyaltyActorSupervisor = system.actorOf(LoyaltyActorSupervisor.props(loyaltyRepository))
-
-  // TODO: Uncomment to enable cluster sharding.
-  //  val loyaltyActorSupervisor = ClusterSharding(system).start(
-  //    "loyalty",
-  //    LoyaltyActor.props(loyaltyRepository),
-  //    ClusterShardingSettings(system),
-  //    LoyaltyActorSupervisor.idExtractor,
-  //    LoyaltyActorSupervisor.shardIdExtractor
-  //  )
+  // val loyaltyActorSupervisor = system.actorOf(LoyaltyActorSupervisor.props(loyaltyRepository))
+   
+  val loyaltyActorSupervisor = ClusterSharding(system).start(
+     "loyalty",
+     LoyaltyActor.props(loyaltyRepository),
+     ClusterShardingSettings(system),
+     LoyaltyActorSupervisor.idExtractor,
+     LoyaltyActorSupervisor.shardIdExtractor
+   )
 
   val loyaltyRoutes = new LoyaltyRoutes(loyaltyActorSupervisor)(system.dispatcher)
 
