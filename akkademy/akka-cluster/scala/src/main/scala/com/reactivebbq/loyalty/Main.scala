@@ -6,6 +6,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import org.slf4j.LoggerFactory
 import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings}
+import akka.management.scaladsl.AkkaManagement
 
 object Main extends App {
   val log = LoggerFactory.getLogger(this.getClass)
@@ -19,10 +20,11 @@ object Main extends App {
 
   implicit val system: ActorSystem = ActorSystem("Loyalty")
 
+  AkkaManagement(system).start()
+
   val rootPath = Paths.get("tmp")
   val loyaltyRepository: LoyaltyRepository = new FileBasedLoyaltyRepository(rootPath)(system.dispatcher)
 
-  // val loyaltyActorSupervisor = system.actorOf(LoyaltyActorSupervisor.props(loyaltyRepository))
    
   val loyaltyActorSupervisor = ClusterSharding(system).start(
      "loyalty",
