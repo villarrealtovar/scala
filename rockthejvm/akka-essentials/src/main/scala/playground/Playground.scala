@@ -1,6 +1,6 @@
 package playground
 
-import akka.actor.ActorSystem
+import org.apache.pekko.actor.ActorSystem
 
 object Playground extends App {
 
