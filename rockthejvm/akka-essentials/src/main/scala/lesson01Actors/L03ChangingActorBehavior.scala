@@ -48,6 +48,9 @@ object L03ChangingActorBehavior extends App {
     def receive: Receive = {
       case MomStart(kidRef) =>
         kidRef ! Food(VEGETABLE)
+        kidRef ! Food(VEGETABLE)
+        kidRef ! Food(CHOCOLATE)
+        kidRef ! Food(CHOCOLATE)
         kidRef ! Ask("do you want to play?")
       case KidAccept => println("Yay, my kid is happy")
       case KidReject => println("My kid is sad, but as he's healthy!")
@@ -68,14 +71,14 @@ object L03ChangingActorBehavior extends App {
     def receive: Receive = happyReceive
 
     def happyReceive: Receive = {
-      case Food(VEGETABLE) => context.become(sadReceive)
+      case Food(VEGETABLE) => context.become(sadReceive, false)
       case Food(CHOCOLATE) =>
       case Ask(_)          => sender() ! KidAccept
     }
 
     def sadReceive: Receive = {
-      case Food(VEGETABLE) =>
-      case Food(CHOCOLATE) => context.become(happyReceive)
+      case Food(VEGETABLE) => context.become(sadReceive, false)
+      case Food(CHOCOLATE) => context.unbecome()
       case Ask(_)          => sender() ! KidReject
     }
   }
