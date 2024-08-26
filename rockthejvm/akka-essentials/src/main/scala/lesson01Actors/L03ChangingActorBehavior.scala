@@ -144,11 +144,13 @@ object L03ChangingActorBehavior extends App {
   class Citizen extends Actor {
     import Citizen._
 
-    var candidate: Option[String] = None
-
     override def receive: Receive = {
-      case Vote(c)           => candidate = Some(c)
-      case VoteStatusRequest => sender() ! VoteStatusReply(candidate)
+      case Vote(c)           => context.become(voted(c))
+      case VoteStatusRequest => sender() ! VoteStatusReply(None)
+    }
+
+    def voted(candidate: String): Receive = { case VoteStatusRequest =>
+      sender() ! VoteStatusReply(Some(candidate))
     }
   }
 
@@ -160,23 +162,29 @@ object L03ChangingActorBehavior extends App {
     import VoteAggregator._
     import Citizen._
 
-    var stillWaiting: Set[ActorRef] = Set.empty
-    var currentStats: Map[String, Int] = Map.empty
+    override def receive: Receive = awaitingCommand
 
-    override def receive: Receive = {
-      case AggregateVotes(citizens) =>
-        stillWaiting = citizens
-        citizens.foreach(citizenRef => citizenRef ! VoteStatusRequest)
+    def awaitingCommand: Receive = { case AggregateVotes(citizens) =>
+      citizens.foreach(citizenRef => citizenRef ! VoteStatusRequest)
+      context.become(awaitingStatuses(citizens, Map.empty))
+    }
+
+    def awaitingStatuses(
+        stillWaiting: Set[ActorRef],
+        currentStats: Map[String, Int]
+    ): Receive = {
+
       case VoteStatusReply(None) => sender() ! VoteStatusRequest
       case VoteStatusReply(Some(candidate)) =>
         val newStillWaiting = stillWaiting - sender()
         val currentVotesOfCandidate = currentStats.getOrElse(candidate, 0)
-        currentStats =
+        val newStats =
           currentStats + (candidate -> (currentVotesOfCandidate + 1))
         if (newStillWaiting.isEmpty)
-          println(s"[VoteAggregator]: poll stats: $currentStats")
-        else stillWaiting = newStillWaiting
+          println(s"[VoteAggregator]: poll stats: $newStats")
+        else context.become(awaitingStatuses(newStillWaiting, newStats))
     }
+
   }
 
   val alice = system.actorOf(Props[Citizen])
