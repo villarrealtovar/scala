@@ -39,7 +39,6 @@ object L05ChildActorsExercise extends App {
         val originalSender = sender()
         val childRef = childrenRefs(curIndexChild)
         childRef ! WordCountTask(curTaskId, text)
-        val nextChildIndex = (curIndexChild + 1) % childrenRefs.length
         context.become(
           withChildrenRefs(
             childrenRefs,
