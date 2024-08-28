@@ -1,6 +1,6 @@
 {
   "aJsonProperty": "something",
-  "akka": {
+  "pekko": {
     "loglevel": "DEBUG"
   }
 }
