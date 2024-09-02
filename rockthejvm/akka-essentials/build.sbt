@@ -4,12 +4,13 @@ version := "0.1"
 
 scalaVersion := "2.13.14"
 
-val akkaVersion = "2.5.23"
-
-val PekkoVersion = "1.0.2"
+val pekkoVersion = "1.0.2"
+val scalaTestVersion = "3.2.9"
+val logbackVersion = "1.2.11"
 
 libraryDependencies ++= Seq(
-  "org.apache.pekko" %% "pekko-actor-typed" % PekkoVersion,
-  "org.apache.pekko" %% "pekko-testkit" % PekkoVersion,
-  "ch.qos.logback" % "logback-classic" % "1.2.11"
+  "org.apache.pekko" %% "pekko-actor-typed" % pekkoVersion,
+  "org.apache.pekko" %% "pekko-testkit" % pekkoVersion,
+  "ch.qos.logback" % "logback-classic" % logbackVersion,
+  "org.scalatest" %% "scalatest" % scalaTestVersion
 )
