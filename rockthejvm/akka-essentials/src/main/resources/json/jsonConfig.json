@@ -1,0 +1,6 @@
+{
+  "aJsonProperty": "something",
+  "pekko": {
+    "loglevel": "DEBUG"
+  }
+}
